@@ -1,4 +1,4 @@
-package org.padan.Model;
+package org.padan.Model.Objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
