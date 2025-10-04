@@ -1,26 +1,22 @@
 package org.padan.Model;
 
-public abstract class User {
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@Data
+@NoArgsConstructor
+public abstract class UserDTO {
+    private UUID userId;
     private String firstName;
     private String lastName;
     private String email;
 
-    public User(String firstName, String lastName, String email) {
+    public UserDTO(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public abstract double getDiscount();

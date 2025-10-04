@@ -1,7 +1,12 @@
 package org.padan.Model;
 
-public class StudentUser extends User {
-    public StudentUser(String firstName, String lastName, String email) {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class StudentUserDTO extends UserDTO {
+    public StudentUserDTO(String firstName, String lastName, String email) {
         super(firstName, lastName, email);
     }
 

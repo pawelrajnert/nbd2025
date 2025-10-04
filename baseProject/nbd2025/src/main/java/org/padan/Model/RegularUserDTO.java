@@ -1,14 +1,19 @@
 package org.padan.Model;
 
-public class RegularUser extends User {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class RegularUserDTO extends UserDTO {
     private Integer loyaltyCounter;
 
-    public RegularUser(String firstName, String lastName, String email) {
+    public RegularUserDTO(String firstName, String lastName, String email) {
         super(firstName, lastName, email);
         this.loyaltyCounter = 0;
     }
 
-    public RegularUser(String firstName, String lastName, String email, Integer loyaltyCounter) {
+    public RegularUserDTO(String firstName, String lastName, String email, Integer loyaltyCounter) {
         super(firstName, lastName, email);
         this.loyaltyCounter = loyaltyCounter;
     }

@@ -1,14 +1,14 @@
 package org.padan;
 
-import org.padan.Model.TrainerUser;
-import org.padan.Model.User;
+import org.padan.Model.TrainerUserDTO;
+import org.padan.Model.UserDTO;
 
 /**
  * Hello world!
  */
 public class App {
     public static void main(String[] args) {
-        User user = new TrainerUser("a", "b", "c", true);
+        UserDTO user = new TrainerUserDTO("a", "b", "c", true);
         System.out.println(user.toString());
     }
 }

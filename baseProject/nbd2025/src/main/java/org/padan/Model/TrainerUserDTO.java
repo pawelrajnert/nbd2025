@@ -1,9 +1,14 @@
 package org.padan.Model;
 
-public class TrainerUser extends User {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class TrainerUserDTO extends UserDTO {
     private Boolean isPartner;
 
-    public TrainerUser(String firstName, String lastName, String email, Boolean isPartner) {
+    public TrainerUserDTO(String firstName, String lastName, String email, Boolean isPartner) {
         super(firstName, lastName, email);
         this.isPartner = isPartner;
     }
