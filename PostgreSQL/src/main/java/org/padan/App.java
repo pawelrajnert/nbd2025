@@ -2,21 +2,26 @@ package org.padan;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
-import org.padan.Model.Objects.TrainerUserDTO;
-import org.padan.Model.Objects.UserDTO;
+import org.padan.Model.Manager.UserManager;
+import org.padan.Model.Objects.TrainerUser;
+import org.padan.Model.Objects.User;
+import org.padan.Model.Repository.UserRepository;
 
 /**
  * Hello world!
  */
 public class App {
     public static void main(String[] args) {
-        UserDTO user = new TrainerUserDTO("a", "b", "c", true);
-        System.out.println(user.toString());
-        System.out.println("Hello World!");
-
-        try(EntityManagerFactory emf = Persistence.createEntityManagerFactory("nbddb")) {
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("nbddb")) {
             EntityManager em = emf.createEntityManager();
+            EntityTransaction transaction = em.getTransaction();
+
+            UserManager manager = new UserManager(em, transaction);
+            User user = new TrainerUser("a", "b", "c", true);
+            manager.registerUser(user);
         }
+
     }
 }

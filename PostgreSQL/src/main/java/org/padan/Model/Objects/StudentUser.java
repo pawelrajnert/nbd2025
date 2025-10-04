@@ -2,20 +2,17 @@ package org.padan.Model.Objects;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+//@Builder
+//@AllArgsConstructor
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue(value = "student_user")
-public class StudentUserDTO extends UserDTO {
-    public StudentUserDTO(String firstName, String lastName, String email) {
-        super(firstName, lastName, email);
-    }
-
+public class StudentUser extends User {
     @Override
     public double getDiscount() {
         return 0.25;

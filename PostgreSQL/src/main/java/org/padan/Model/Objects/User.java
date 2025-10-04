@@ -1,19 +1,22 @@
 package org.padan.Model.Objects;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class UserDTO {
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +34,18 @@ public abstract class UserDTO {
     @Column(name = "email")
     private String email;
 
-    public UserDTO(String firstName, String lastName, String email) {
+    @Version
+    @Getter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE)
+    private Integer version;
+
+
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+    @UpdateTimestamp
+    private LocalDateTime dateUpdated;
+
+    public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

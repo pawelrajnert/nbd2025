@@ -5,10 +5,15 @@
              version="3.0">
     <persistence-unit name="nbddb" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
+        <class>org.padan.Model.Objects.RegularUser</class>
+        <class>org.padan.Model.Objects.Reservation</class>
+        <class>org.padan.Model.Objects.Room</class>
+        <class>org.padan.Model.Objects.StudentUser</class>
+        <class>org.padan.Model.Objects.TrainerUser</class>
+        <class>org.padan.Model.Objects.User</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/nbddb"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/nbddb"/>
             <property name="jakarta.persistence.jdbc.user" value="nbd"/>
             <property name="jakarta.persistence.jdbc.password" value="nbdpassword"/>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>

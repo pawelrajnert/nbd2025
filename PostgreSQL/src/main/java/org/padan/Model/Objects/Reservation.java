@@ -3,12 +3,18 @@ package org.padan.Model.Objects;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "Reservations")
 public class Reservation {
@@ -16,6 +22,16 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID reservationId;
+
+    @Version
+    @Getter(AccessLevel.PRIVATE)
+    @Setter(AccessLevel.PRIVATE)
+    private int version;
+
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+    @UpdateTimestamp
+    private LocalDateTime dateUpdated;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -25,11 +41,11 @@ public class Reservation {
     // The EAGER strategy is a requirement on the persistence provider runtime that the associated entity must be eagerly fetched.
     // cascade z dokumentacji: (czy zarowno encja nadrzedna jak i podrzedna ma sie aktualizowac)
     // The operations that must be cascaded to the target of the association.
-    private RoomDTO room;
+    private Room room;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private UserDTO user;
+    private User user;
 
     @NotNull
     @Column(name = "start_time")

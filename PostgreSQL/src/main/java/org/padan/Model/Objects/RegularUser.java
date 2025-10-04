@@ -3,25 +3,26 @@ package org.padan.Model.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue(value = "regular_user")
-public class RegularUserDTO extends UserDTO {
+public class RegularUser extends User {
     @Column(name = "loyalty_counter")
     private Integer loyaltyCounter;
 
-    public RegularUserDTO(String firstName, String lastName, String email) {
+    public RegularUser(String firstName, String lastName, String email) {
         super(firstName, lastName, email);
         this.loyaltyCounter = 0;
     }
 
-    public RegularUserDTO(String firstName, String lastName, String email, Integer loyaltyCounter) {
+    public RegularUser(String firstName, String lastName, String email, Integer loyaltyCounter) {
         super(firstName, lastName, email);
         this.loyaltyCounter = loyaltyCounter;
     }
