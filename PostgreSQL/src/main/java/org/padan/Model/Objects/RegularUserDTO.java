@@ -1,11 +1,19 @@
 package org.padan.Model.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Entity
+@NoArgsConstructor
+@DiscriminatorValue(value = "regular_user")
 public class RegularUserDTO extends UserDTO {
+    @Column(name = "loyalty_counter")
     private Integer loyaltyCounter;
 
     public RegularUserDTO(String firstName, String lastName, String email) {
