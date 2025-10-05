@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import jakarta.transaction.Transactional;
 import org.padan.Model.Objects.Reservation;
 import org.padan.Model.Objects.Room;
 import org.padan.Model.Repository.ReservationRepository;
@@ -19,6 +20,8 @@ public class ReservationManager {
     private final EntityManager em;
     private final EntityTransaction transaction;
 
+
+
     public ReservationManager (EntityManager em, EntityTransaction transaction) {
         repository = new ReservationRepository();
         this.em = em;
@@ -26,6 +29,7 @@ public class ReservationManager {
     }
 
     public void makeReservation() {
+
         //TODO: zrobić sprawdzenie na kolizję czasu
     }
 

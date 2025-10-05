@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Getter
@@ -59,12 +60,12 @@ public class Reservation {
     @Column(name = "price")
     private Double price;
 
-    private void calculateActualPrice() {
+    public void calculateActualPrice() {
         price = user.getDiscount() * room.getBasePrice();
     }
 
-    private int hoursReserved() {
-        return endTime.getHour() - startTime.getHour();
+    public double hoursReserved() {
+        return (double) (endTime.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC)) / 60 / 60;
     }
 
 }

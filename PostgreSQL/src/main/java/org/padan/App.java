@@ -21,7 +21,7 @@ public class App {
             UserManager manager = new UserManager(em, transaction);
             User user = new TrainerUser("a", "b", "c", true);
             manager.registerUser(user);
-        }
 
+        }
     }
 }
