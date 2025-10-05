@@ -1,7 +1,6 @@
 package org.padan.Model.Repository;
 
 import jakarta.persistence.*;
-import org.padan.Model.Objects.Room;
 import org.padan.Model.Objects.User;
 
 import java.util.List;

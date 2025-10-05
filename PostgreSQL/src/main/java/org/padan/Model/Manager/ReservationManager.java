@@ -1,16 +1,11 @@
 package org.padan.Model.Manager;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-import jakarta.transaction.Transactional;
 import org.padan.Model.Objects.Reservation;
-import org.padan.Model.Objects.Room;
 import org.padan.Model.Repository.ReservationRepository;
-import org.padan.Model.Repository.RoomRepository;
-import org.padan.Model.Repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,16 +16,39 @@ public class ReservationManager {
     private final EntityTransaction transaction;
 
 
-
-    public ReservationManager (EntityManager em, EntityTransaction transaction) {
+    public ReservationManager(EntityManager em, EntityTransaction transaction) {
         repository = new ReservationRepository();
         this.em = em;
         this.transaction = transaction;
     }
 
-    public void makeReservation() {
+    public void makeReservation(Reservation res) {
+        try {
+            LocalDateTime start = res.getStartTime();
+            LocalDateTime end = res.getEndTime();
+            List<Reservation> allReservations = getAllReservations();
 
-        //TODO: zrobić sprawdzenie na kolizję czasu
+            if (start.isAfter(end) || start.equals(end)) {
+                throw new Exception("Czas zakończenia rezerwacji jest niepoprawny.");
+            }
+
+            for (Reservation r : allReservations) {
+                if (res.getRoom().equals(r.getRoom())) {
+                    boolean timeCollision = start.isBefore(r.getEndTime()) && end.isAfter(r.getStartTime());
+
+                    if (timeCollision) {
+                        throw new Exception("W tym czasie istnieje już inna rezerwacja.");
+                    }
+                }
+            }
+
+            transaction.begin();
+            repository.add(res, em);
+            transaction.commit();
+            System.out.println("Dodano nową rezerwację.");
+        } catch (Exception e) {
+            System.out.println("Nie można dokonać rezerwacji: " + e.getMessage());
+        }
     }
 
     public void cancelReservation(UUID id) {
@@ -47,10 +65,40 @@ public class ReservationManager {
         return repository.findAll(em);
     }
 
-    public void updateReservation(Reservation reservation, UUID id){
-        transaction.begin();
-        //TODO: sprawdzać kolizie (czy kolizje, nie wiem)
-        repository.updateElement(reservation, id, em);
-        transaction.commit();
+    public void updateReservation(Reservation res, UUID id) {
+        try {
+            LocalDateTime start = res.getStartTime();
+            LocalDateTime end = res.getEndTime();
+            List<Reservation> allReservations = getAllReservations();
+
+            if (start.isAfter(end) || start.equals(end)) {
+                throw new Exception("Czas zakończenia rezerwacji jest niepoprawny.");
+            }
+
+            for (Reservation r : allReservations) {
+                if(res.getReservationId().equals(r.getReservationId())) {
+                    continue;
+                }
+
+                if (res.getRoom().equals(r.getRoom())) {
+                    boolean timeCollision = start.isBefore(r.getEndTime()) && end.isAfter(r.getStartTime());
+
+                    if (timeCollision) {
+                        throw new Exception("W tym czasie istnieje już inna rezerwacja.");
+                    }
+                }
+            }
+
+            res.setStartTime(start);
+            res.setEndTime(end);
+            transaction.begin();
+            repository.updateElement(res, id, em);
+            transaction.commit();
+            System.out.println("Zaaktualizowano rezerwację.");
+        }
+        catch (Exception e) {
+            System.out.println("Nie zaaktualizować rezerwacji: " + e.getMessage());
+        }
+
     }
 }

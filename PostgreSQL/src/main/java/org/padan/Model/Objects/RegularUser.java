@@ -8,8 +8,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue(value = "regular_user")

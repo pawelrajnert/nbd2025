@@ -7,12 +7,15 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-//@Builder
-//@AllArgsConstructor
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue(value = "student_user")
 public class StudentUser extends User {
+
+    public StudentUser(String firstName, String lastName, String email) {
+        super(firstName, lastName, email);
+    }
+
     @Override
     public double getDiscount() {
         return 0.25;

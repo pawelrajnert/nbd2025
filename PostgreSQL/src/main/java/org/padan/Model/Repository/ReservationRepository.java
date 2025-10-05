@@ -9,9 +9,6 @@ import java.util.UUID;
 public class ReservationRepository implements Repository<Reservation> {
     @Override
     public void add(Reservation obj, EntityManager em) {
-        // Jest druga w nocy i już nie mogę myśleć, ale trzeba się zastanowić gdzie będziemy sprawdzać czy
-        // rezerwacje nie kolidują ze sobą czasowo dla jednej sali - czy w managerach czy tutaj w repozytorium.
-        // Albo teoretycznie można w obu miejscach, tak żeby na pewno dzialało, ale wtedy więcej testów trzeba.
         em.persist(obj);
     }
 
@@ -37,6 +34,8 @@ public class ReservationRepository implements Repository<Reservation> {
     public void updateElement(Reservation newElement, UUID id, EntityManager em) {
         Reservation reservation = em.find(Reservation.class, id, LockModeType.PESSIMISTIC_WRITE);
         reservation.setRoom(newElement.getRoom());
-        //TODO: skończyć tę metodę i sprawdzać kolizje
+        reservation.setStartTime(newElement.getStartTime());
+        reservation.setEndTime(newElement.getEndTime());
+        reservation.setPrice(newElement.getPrice());
     }
 }

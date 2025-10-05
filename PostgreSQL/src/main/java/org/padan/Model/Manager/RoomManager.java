@@ -1,9 +1,7 @@
 package org.padan.Model.Manager;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 import org.padan.Model.Objects.Room;
 import org.padan.Model.Repository.RoomRepository;
 
@@ -15,12 +13,10 @@ public class RoomManager {
     private final EntityManager em;
     private final EntityTransaction transaction;
 
-    public RoomManager() {
+    public RoomManager(EntityManager em, EntityTransaction transaction) {
         repository = new RoomRepository();
-        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("nbddb")) {
-            em = emf.createEntityManager();
-            transaction = em.getTransaction();
-        }
+        this.em = em;
+        this.transaction = transaction;
     }
 
     public void addRoom(Room obj) {
@@ -44,7 +40,7 @@ public class RoomManager {
         return repository.findAll(em);
     }
 
-    public void updateRoom(Room room, UUID id){
+    public void updateRoom(Room room, UUID id) {
         transaction.begin();
         repository.updateElement(room, id, em);
         transaction.commit();

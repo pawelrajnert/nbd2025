@@ -9,8 +9,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-@AllArgsConstructor
-@Builder
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue(value = "trainer_user")

@@ -18,6 +18,12 @@ import java.util.UUID;
 @Table(name = "Rooms")
 public class Room {
 
+    public Room(RoomType roomType, Integer capacity, Double basePrice) {
+        this.roomType = roomType;
+        this.capacity = capacity;
+        this.basePrice = basePrice;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID roomId;

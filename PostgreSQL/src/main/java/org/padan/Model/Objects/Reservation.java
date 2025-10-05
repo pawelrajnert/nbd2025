@@ -20,6 +20,14 @@ import java.util.UUID;
 @Table(name = "Reservations")
 public class Reservation {
 
+    public Reservation(Room room, User user, LocalDateTime startTime, LocalDateTime endTime, Double price) {
+        this.room = room;
+        this.user = user;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = price;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID reservationId;
