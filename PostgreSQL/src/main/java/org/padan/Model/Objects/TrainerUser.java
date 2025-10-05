@@ -24,7 +24,7 @@ public class TrainerUser extends User {
 
     @Override
     public double getDiscount() {
-        return isPartner ? 0.1 : 0.5;
+        return isPartner ? 0.5 : 0.1;
     }
 
     @Override

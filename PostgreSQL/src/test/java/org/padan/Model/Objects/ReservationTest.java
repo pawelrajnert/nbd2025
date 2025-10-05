@@ -1,12 +1,13 @@
 package org.padan.Model.Objects;
 
 import org.junit.jupiter.api.Test;
+import org.padan.BaseTC;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ReservationTest {
+class ReservationTest extends BaseTC {
 
     @Test
     void hoursOfReservationTest() {

@@ -33,7 +33,7 @@ public class RegularUser extends User {
 
     @Override
     public String getTypeName() {
-        return this.getClass().getName();
+        return "RegularUser";
     }
 
     public void incrementLoyalty() {
