@@ -2,6 +2,7 @@ package org.padan.Model.Objects;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,6 +25,7 @@ public abstract class User {
 
     @NotNull
     @Column(name = "first_name")
+    @Size(min = 2, max = 3)
     private String firstName;
 
     @NotNull

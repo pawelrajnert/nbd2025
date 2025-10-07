@@ -65,13 +65,11 @@ public class ReservationManager {
         return repository.findAll(em);
     }
 
-    public void updateReservation(Reservation res, UUID id) {
+    public void updateReservation(Reservation res, UUID id, LocalDateTime newStart, LocalDateTime newEnd) {
         try {
-            LocalDateTime start = res.getStartTime();
-            LocalDateTime end = res.getEndTime();
             List<Reservation> allReservations = getAllReservations();
 
-            if (start.isAfter(end) || start.equals(end)) {
+            if (newStart.isAfter(newEnd) || newStart.equals(newEnd)) {
                 throw new Exception("Czas zakończenia rezerwacji jest niepoprawny.");
             }
 
@@ -81,7 +79,7 @@ public class ReservationManager {
                 }
 
                 if (res.getRoom().equals(r.getRoom())) {
-                    boolean timeCollision = start.isBefore(r.getEndTime()) && end.isAfter(r.getStartTime());
+                    boolean timeCollision = newStart.isBefore(r.getEndTime()) && newEnd.isAfter(r.getStartTime());
 
                     if (timeCollision) {
                         throw new Exception("W tym czasie istnieje już inna rezerwacja.");
@@ -89,8 +87,10 @@ public class ReservationManager {
                 }
             }
 
-            res.setStartTime(start);
-            res.setEndTime(end);
+            res.setStartTime(newStart);
+            res.setEndTime(newEnd);
+            res.setRoom(res.getRoom());
+            res.setUser(res.getUser());
             transaction.begin();
             repository.updateElement(res, id, em);
             transaction.commit();

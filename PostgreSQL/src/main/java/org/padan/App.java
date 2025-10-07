@@ -10,10 +10,11 @@ import org.padan.Model.Manager.UserManager;
 import org.padan.Model.Objects.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        try {
+        /* try {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("nbddb");
             EntityManager em = emf.createEntityManager();
             EntityTransaction transaction = em.getTransaction();
@@ -23,7 +24,7 @@ public class App {
             ReservationManager resm = new ReservationManager(em, transaction);
 
             // tworzymy 3 przykladowych uzytkownikow
-            User user1 = new TrainerUser("abc", "abc", "abc@gmail.com", true);
+            User user1 = new TrainerUser("abdddc", "abc", "abc@gmail.com", true);
             User user2 = new RegularUser("abd", "abd", "abd@gmail.com", 5);
             User user3 = new StudentUser("abe", "abe", "abe@gmail.com");
 
@@ -63,12 +64,11 @@ public class App {
             // sprawdzamy edycje rezerwacji
             LocalDateTime start4 = LocalDateTime.of(2025, 10, 25, 15, 0);
             LocalDateTime end4 = LocalDateTime.of(2025, 10, 25, 17, 0);
-            res3.setStartTime(start4);
-            res3.setEndTime(end4);
-            resm.updateReservation(res3, res3.getReservationId());
+            resm.updateReservation(res3, res3.getReservationId(),start4,end4);
+
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } */
     }
 }

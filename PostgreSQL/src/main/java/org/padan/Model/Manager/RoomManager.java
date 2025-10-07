@@ -32,8 +32,8 @@ public class RoomManager {
         transaction.commit();
     }
 
-    public void findRoom(UUID id) {
-        repository.findById(id, em);
+    public Room findRoom(UUID id) {
+        return repository.findById(id, em);
     }
 
     public List<Room> getAllRooms() {

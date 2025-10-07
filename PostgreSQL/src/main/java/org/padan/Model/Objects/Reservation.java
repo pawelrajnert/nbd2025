@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.padan.Model.Manager.ReservationManager;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -33,7 +34,7 @@ public class Reservation {
     private UUID reservationId;
 
     @Version
-    @Getter(AccessLevel.PRIVATE)
+    @Getter
     @Setter(AccessLevel.PRIVATE)
     private int version;
 

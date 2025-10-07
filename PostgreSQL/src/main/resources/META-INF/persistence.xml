@@ -19,7 +19,7 @@
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.connection.isolation" value="2"/>
+            <property name="hibernate.connection.isolation" value="2"/> <!-- value = 2, read commited -->
         </properties>
     </persistence-unit>
 </persistence>
