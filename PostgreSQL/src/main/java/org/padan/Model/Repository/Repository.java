@@ -1,16 +1,18 @@
 package org.padan.Model.Repository;
 
+import jakarta.persistence.EntityManager;
+
 import java.util.List;
+import java.util.UUID;
 
 public interface Repository<T> {
-    void add(T obj);
+    void add(T obj, EntityManager em);
 
-    void remove(T obj);
+    void removeById(UUID obj, EntityManager em);
 
-    void find(T obj);
+    T findById(UUID obj, EntityManager em);
 
-    List<T> findAll();
+    List<T> findAll(EntityManager em);
 
-    int getSize();
-
+    void updateElement(T newElement, UUID id, EntityManager em);
 }

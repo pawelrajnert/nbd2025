@@ -1,19 +1,26 @@
 package org.padan.Model.Objects;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
-public class RegularUserDTO extends UserDTO {
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+@DiscriminatorValue(value = "regular_user")
+public class RegularUser extends User {
+    @Column(name = "loyalty_counter")
     private Integer loyaltyCounter;
 
-    public RegularUserDTO(String firstName, String lastName, String email) {
+    public RegularUser(String firstName, String lastName, String email) {
         super(firstName, lastName, email);
         this.loyaltyCounter = 0;
     }
 
-    public RegularUserDTO(String firstName, String lastName, String email, Integer loyaltyCounter) {
+    public RegularUser(String firstName, String lastName, String email, Integer loyaltyCounter) {
         super(firstName, lastName, email);
         this.loyaltyCounter = loyaltyCounter;
     }
@@ -26,7 +33,7 @@ public class RegularUserDTO extends UserDTO {
 
     @Override
     public String getTypeName() {
-        return this.getClass().getName();
+        return "RegularUser";
     }
 
     public void incrementLoyalty() {

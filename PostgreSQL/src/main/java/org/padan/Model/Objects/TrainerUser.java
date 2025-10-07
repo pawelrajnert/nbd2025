@@ -1,21 +1,30 @@
 package org.padan.Model.Objects;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
-public class TrainerUserDTO extends UserDTO {
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+@DiscriminatorValue(value = "trainer_user")
+public class TrainerUser extends User {
+    @NotNull
+    @Column(name = "is_partner")
     private Boolean isPartner;
 
-    public TrainerUserDTO(String firstName, String lastName, String email, Boolean isPartner) {
+    public TrainerUser(String firstName, String lastName, String email, Boolean isPartner) {
         super(firstName, lastName, email);
         this.isPartner = isPartner;
     }
 
     @Override
     public double getDiscount() {
-        return isPartner ? 0.1 : 0.5;
+        return isPartner ? 0.5 : 0.1;
     }
 
     @Override
