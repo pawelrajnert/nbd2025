@@ -3,6 +3,7 @@ package org.padan.Model.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
@@ -13,6 +14,7 @@ import lombok.*;
 @DiscriminatorValue(value = "regular_user")
 public class RegularUser extends User {
     @Column(name = "loyalty_counter")
+    @Min(0)
     private Integer loyaltyCounter;
 
     public RegularUser(String firstName, String lastName, String email) {

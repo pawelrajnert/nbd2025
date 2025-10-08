@@ -2,6 +2,7 @@ package org.padan.Model.Objects;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,6 +28,14 @@ public class Reservation {
         this.startTime = startTime;
         this.endTime = endTime;
         this.price = price;
+    }
+
+    public Reservation(Room room, User user, LocalDateTime startTime, LocalDateTime endTime) {
+        this.room = room;
+        this.user = user;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.price = calculateActualPrice();
     }
 
     @Id
@@ -67,10 +76,11 @@ public class Reservation {
 
     @NotNull
     @Column(name = "price")
+    @DecimalMin("0.0")
     private Double price;
 
-    public void calculateActualPrice() {
-        price = user.getDiscount() * room.getBasePrice();
+    public Double calculateActualPrice() {
+        return user.getDiscount() * room.getBasePrice();
     }
 
     public double hoursReserved() {
