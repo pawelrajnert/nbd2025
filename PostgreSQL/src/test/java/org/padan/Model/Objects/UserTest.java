@@ -1,5 +1,6 @@
 package org.padan.Model.Objects;
 
+import jakarta.persistence.RollbackException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.padan.BaseTC;
@@ -111,6 +112,17 @@ public class UserTest extends BaseTC {
         assertEquals("TrainerUser", trainer1.getTypeName());
         assertEquals(false, ((TrainerUser) trainer1).getIsPartner());
         assertEquals((0.1), trainer1.getDiscount());
+    }
+    @Test
+    public void editTrainerFail() {
+
+        trainer1.setFirstName("abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc");
+        trainer1.setLastName("def");
+        trainer1.setEmail("abcdef@gmail.com");
+        ((TrainerUser) trainer1).setIsPartner(false);
+
+
+        assertThrows(RollbackException.class,()->um.updateUser(trainer1, trainer1.getUserId()));
     }
 
     @Test

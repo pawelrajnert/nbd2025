@@ -24,16 +24,15 @@ public abstract class User {
     private UUID userId;
 
     @NotNull
-    @Column(name = "first_name")
-    @Size(min = 2, max = 3)
+    @Column(name = "first_name", length = 64)
     private String firstName;
 
     @NotNull
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 64)
     private String lastName;
 
     @NotNull
-    @Column(name = "email")
+    @Column(name = "email", length = 64)
     private String email;
 
     @Version

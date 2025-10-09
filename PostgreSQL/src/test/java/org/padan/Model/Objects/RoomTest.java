@@ -48,6 +48,7 @@ public class RoomTest extends BaseTC {
         assertEquals(RoomType.COURT, room4.getRoomType());
         assertEquals(2, room4.getCapacity());
         assertEquals(200, room4.getBasePrice());
+        System.out.println(rm.getAllRooms().size());
     }
 
     @Test
@@ -83,6 +84,7 @@ public class RoomTest extends BaseTC {
         assertEquals(RoomType.GYM, room4.getRoomType());
         assertEquals(100, room4.getBasePrice());
         assertEquals(10, room4.getCapacity());
+        System.out.println(rm.getAllRooms().size());
     }
 
     @Test
@@ -96,5 +98,6 @@ public class RoomTest extends BaseTC {
         assertNull(rm.findRoom(room2.getRoomId()));
         assertNull(rm.findRoom(room3.getRoomId()));
         assertNull(rm.findRoom(room4.getRoomId()));
+        System.out.println(rm.getAllRooms().size());
     }
 }

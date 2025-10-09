@@ -1,8 +1,9 @@
 package org.padan.Model.Objects;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.Check;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -45,9 +46,11 @@ public class Room {
 
     @NotNull
     @Column(name = "capacity")
+    @Min(0)
     private Integer capacity;
 
     @NotNull
     @Column(name = "base_price")
+    @DecimalMin("0.0")
     private Double basePrice;
 }
