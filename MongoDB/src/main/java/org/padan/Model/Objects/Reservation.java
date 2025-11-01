@@ -1,22 +1,36 @@
 package org.padan.Model.Objects;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
-    private UUID reservationId;
-    private RoomDTO room;
-    private UserDTO user;
+    @BsonId
+    private ObjectId reservationId;
+    @BsonProperty("room")
+    private Room room;
+    @BsonProperty("user")
+    private User user;
+    @BsonProperty("start_time")
     private LocalDateTime startTime;
+    @BsonProperty("end_time")
     private LocalDateTime endTime;
-    private Double price;
+//    @BsonProperty("price")
+//    private Double price;
 
-    private void calculateActualPrice(){
-        price = user.getDiscount() * room.getBasePrice();
+    private double getPrice(){
+        return user.getDiscount() * room.getBasePrice();
     }
 
     private int hoursReserved(){

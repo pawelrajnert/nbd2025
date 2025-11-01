@@ -1,16 +1,18 @@
 package org.padan.Model.Repository;
 
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 public interface Repository<T> {
     void add(T obj);
 
-    void remove(T obj);
+    void remove(ObjectId obj);
 
-    void find(T obj);
+    T findById(ObjectId id);
 
     List<T> findAll();
 
-    int getSize();
+    void update(ObjectId id, T obj);
 
 }
