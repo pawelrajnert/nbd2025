@@ -1,13 +1,12 @@
 package org.padan.Model.Repository;
 
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import org.padan.Model.Objects.RegularUser;
 import org.padan.Model.Objects.Room;
-import org.padan.Model.Objects.TrainerUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,14 @@ public class RoomRepository extends AbstractMongoRepository implements Repositor
     }
 
     @Override
-    public void add(Room obj) {
-        rooms.insertOne(obj);
+    public void add(ClientSession session, Room obj) {
+        rooms.insertOne(session, obj);
     }
 
     @Override
-    public void remove(ObjectId obj) {
+    public void remove(ClientSession session, ObjectId obj) {
         Bson filter = Filters.eq("_id", obj);
-        rooms.deleteOne(filter);
+        rooms.deleteOne(session, filter);
     }
 
     @Override
@@ -43,15 +42,10 @@ public class RoomRepository extends AbstractMongoRepository implements Repositor
     }
 
     @Override
-    public void update(ObjectId id, Room obj) {
+    public void update(ClientSession session, ObjectId id, Room obj) {
         Bson updateCapacity = Updates.set("capacity", obj.getCapacity());
         Bson updatePrice = Updates.set("base_price", obj.getBasePrice());
         Bson updateRoomType = Updates.set("room_type", obj.getRoomType());
-        rooms.updateOne(Filters.eq("_id", id), Updates.combine(updatePrice, updateCapacity, updateRoomType));
-    }
-
-    @Override
-    public void close() throws Exception {
-
+        rooms.updateOne(session, Filters.eq("_id", id), Updates.combine(updatePrice, updateCapacity, updateRoomType));
     }
 }

@@ -1,5 +1,6 @@
 package org.padan.Model.Repository;
 
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -13,19 +14,20 @@ import java.util.List;
 public class UserRepository extends AbstractMongoRepository implements Repository<User> {
 
     MongoCollection<User> users;
+
     public UserRepository() {
         users = getRentAFieldDB().getCollection("users", User.class);
     }
 
     @Override
-    public void add(User obj) {
-        users.insertOne(obj);
+    public void add(ClientSession session, User obj) {
+        users.insertOne(session, obj);
     }
 
     @Override
-    public void remove(ObjectId obj) {
+    public void remove(ClientSession session, ObjectId obj) {
         Bson filter = Filters.eq("_id", obj);
-        users.deleteOne(filter);
+        users.deleteOne(session, filter);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class UserRepository extends AbstractMongoRepository implements Repositor
     }
 
     @Override
-    public void update(ObjectId id, User obj) {
+    public void update(ClientSession session, ObjectId id, User obj) {
         Bson updateName = Updates.set("first_name", obj.getFirstName());
         Bson updateEmail = Updates.set("email", obj.getEmail());
         Bson updateLastName = Updates.set("last_name", obj.getLastName());
@@ -53,11 +55,6 @@ public class UserRepository extends AbstractMongoRepository implements Repositor
             Bson updateIsPartner = Updates.set("is_partner", ((TrainerUser) obj).getIsPartner());
             users.updateOne(Filters.eq("_id", id), updateIsPartner);
         }
-        users.updateOne(Filters.eq("_id", id), Updates.combine(updateEmail, updateName, updateLastName));
-    }
-
-    @Override
-    public void close() throws Exception {
-        getMongoClient().close();
+        users.updateOne(session, Filters.eq("_id", id), Updates.combine(updateEmail, updateName, updateLastName));
     }
 }

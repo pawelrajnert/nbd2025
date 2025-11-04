@@ -20,10 +20,10 @@ public class RegularUser extends User {
     @BsonProperty("loyalty_counter")
     private Integer loyaltyCounter;
 
-//    @BsonCreator
-    public RegularUser( String firstName,
-                        String lastName,
-                        String email){
+    //    @BsonCreator
+    public RegularUser(String firstName,
+                       String lastName,
+                       String email) {
         super(firstName, lastName, email);
         this.loyaltyCounter = 0;
     }
@@ -50,4 +50,10 @@ public class RegularUser extends User {
         loyaltyCounter--;
     }
 
+    @Override
+    public String toString() {
+        return "RegularUser{" +
+                "loyaltyCounter=" + loyaltyCounter +
+                "} " + super.toString();
+    }
 }

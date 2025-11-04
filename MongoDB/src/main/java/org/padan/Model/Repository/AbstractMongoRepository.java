@@ -4,6 +4,7 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import lombok.Getter;
@@ -57,4 +58,16 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     public AbstractMongoRepository() {
         initDbConnection();
     }
+
+    public ClientSession startSession() {
+        return mongoClient.startSession();
+    }
+
+    @Override
+    public void close() {
+        if (mongoClient != null) {
+            mongoClient.close();
+        }
+    }
+
 }

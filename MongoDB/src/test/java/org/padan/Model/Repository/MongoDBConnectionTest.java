@@ -69,27 +69,26 @@ public class MongoDBConnectionTest {
         MongoCollection<Document> collection = rentAFieldDB.getCollection("test");
         assertDoesNotThrow(() ->
                 collection.insertOne(Document.parse("""
-                {
-                  "_id": { "$oid": "671f3c6f2b6a4a0012ab1234" },
-                  "room": {
-                    "roomId": "dc8f5c92-5dbb-45cc-8b7a-2af1cb28f5e9",
-                    "roomType": "DELUXE",
-                    "capacity": 2,
-                    "basePrice": 120.0
-                  },
-                  "user": {
-                    "clazz": "student",
-                    "userId": "de4a9651-f046-42b3-9a3d-d0c9753dfbf5",
-                    "firstName": "Alice",
-                    "lastName": "Nowak",
-                    "email": "alice.nowak@example.com",
-                    "faculty": "Computer Science"
-                  },
-                  "startTime": { "$date": "2025-11-02T14:00:00Z" },
-                  "endTime": { "$date": "2025-11-05T10:00:00Z" },
-                  "price": 360.0
-                }
-                """)));
+                        {
+                          "_id": { "$oid": "671f3c6f2b6a4a0012ab1234" },
+                          "room": {
+                            "roomId": "dc8f5c92-5dbb-45cc-8b7a-2af1cb28f5e9",
+                            "roomType": "COURT",
+                            "capacity": 2,
+                            "basePrice": 120.0
+                          },
+                          "user": {
+                            "clazz": "student",
+                            "userId": "de4a9651-f046-42b3-9a3d-d0c9753dfbf5",
+                            "firstName": "Aaa",
+                            "lastName": "BBB",
+                            "email": "aaabbb@example.com",
+                          },
+                          "startTime": { "$date": "2025-11-02T14:00:00Z" },
+                          "endTime": { "$date": "2025-11-05T10:00:00Z" },
+                          "price": 360.0
+                        }
+                        """)));
         collection.deleteOne(Filters.eq("_id", new ObjectId("671f3c6f2b6a4a0012ab1234")));
     }
 
@@ -114,7 +113,6 @@ public class MongoDBConnectionTest {
                 reconnected = true;
                 break;
             } catch (Exception e) {
-                //waiting for primary election
                 Thread.sleep(3000);
             }
         }

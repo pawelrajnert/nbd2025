@@ -1,70 +1,146 @@
 package org.padan.Model.Repository;
 
+import com.mongodb.client.ClientSession;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.padan.Model.Manager.RoomManager;
 import org.padan.Model.Objects.Room;
+import org.padan.Model.Objects.RoomType;
 
-
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.padan.Model.Objects.RoomType.COURT;
+import static org.padan.Model.Objects.RoomType.*;
 
 class RoomRepositoryTest {
-
-    RoomRepository repository;
-
-    Room testRoom;
-    ObjectId testId;
+    private RoomRepository repository;
+    private ClientSession session;
+    private ObjectId testId;
+    private Room testRoom;
+    private RoomManager roomManager;
 
     @BeforeEach
     void setUp() {
-        testId = new ObjectId("000000000000000000000000");
         repository = new RoomRepository();
+        session = repository.startSession();
+        roomManager = new RoomManager(repository, repository.getMongoClient());
+
+        try {
+            for (Room r : repository.findAll()) {
+                roomManager.removeRoom(r.getRoomId());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        testId = new ObjectId("100000000000000000000000");
+
 
         testRoom = Room.builder()
-                .roomType(COURT)
-                .basePrice(12d)
-                .capacity(20)
                 .roomId(testId)
+                .basePrice(12d)
+                .roomType(COURT)
+                .capacity(20)
                 .build();
     }
 
     @AfterEach
     void tearDown() {
-        repository.remove(testId);
+        if (session != null) {
+            try {
+                roomManager.removeRoom(testId);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            try {
+                session.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (repository != null) {
+            try {
+                for (Room r : repository.findAll()) {
+                    roomManager.removeRoom(r.getRoomId());
+                }
+                repository.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     @Test
-    void testAddFind() {
-        int countBefore = repository.findAll().size();
+    void addRoom() {
+        assertEquals(0, repository.findAll().size());
 
-        assertDoesNotThrow(()->repository.add(testRoom));
-        assertTrue(countBefore < repository.findAll().size());
-        assertFalse(repository.findAll().isEmpty());
-        assertEquals(COURT, repository.findById(testId).getRoomType());
-        assertEquals(20, repository.findById(testId).getCapacity());
-        assertEquals(12d, repository.findById(testId).getBasePrice());
+        roomManager.registerRoom(testRoom);
+
+        assertEquals(1, repository.findAll().size());
+
+        Room tr;
+
+        ObjectId newId = new ObjectId("110000000000000000000000");
+
+        tr = Room.builder()
+                .roomId(newId)
+                .basePrice(150d)
+                .roomType(HALL)
+                .capacity(40)
+                .build();
+
+
+        roomManager.registerRoom(tr);
+
+        assertEquals(2, repository.findAll().size());
+        assertEquals(tr.getRoomId(), repository.findById(tr.getRoomId()).getRoomId());
+        assertEquals(tr.getRoomType(), repository.findById(tr.getRoomId()).getRoomType());
+        assertEquals(tr.getCapacity(), repository.findById(tr.getRoomId()).getCapacity());
+        assertEquals(tr.getBasePrice(), repository.findById(tr.getRoomId()).getBasePrice());
     }
 
-
     @Test
-    void testUpdate(){
-        int testCap = 50;
-        repository.add(testRoom);
-        Room room = repository.findById(testId);
-        room.setCapacity(testCap);
-        repository.update(testId, room);
-        assertEquals(testCap, repository.findById(testId).getCapacity());
+    void updateRoom() {
+        roomManager.registerRoom(testRoom);
+
+        testRoom.setRoomType(FIELD);
+        roomManager.updateRoom(testRoom.getRoomId(), testRoom);
+        assertEquals(testRoom.getRoomType(), repository.findById(testRoom.getRoomId()).getRoomType());
     }
 
     @Test
-    void testRemove() {
-        repository.add(testRoom);
-        int countBefore = repository.findAll().size();
-        repository.remove(testId);
-        assertTrue(countBefore > repository.findAll().size());
+    void deleteRoom() {
+        assertEquals(0, repository.findAll().size());
+
+        roomManager.registerRoom(testRoom);
+        assertEquals(1, repository.findAll().size());
+
+        roomManager.removeRoom(testId);
+        assertEquals(0, repository.findAll().size());
+    }
+
+    @Test
+    void fromPojoTest() {
+        roomManager.registerRoom(testRoom);
+
+        MongoCollection<Document> raw = repository.getRentAFieldDB().getCollection("rooms", Document.class);
+        Document doc = raw.find(eq("_id", testId)).first();
+
+        assertNotNull(doc);
+        assertEquals("COURT", doc.getString("room_type"));
+        assertEquals(20, doc.getInteger("capacity"));
+        assertEquals(12.0, doc.getDouble("base_price"));
+    }
+
+    @Test
+    void toPojoTest() {
+        roomManager.registerRoom(testRoom);
+
+        Room fromDb = repository.findById(testId);
+        assertNotNull(fromDb);
+        assertEquals(RoomType.COURT, fromDb.getRoomType());
+        assertEquals(20, fromDb.getCapacity());
+        assertEquals(12.0, fromDb.getBasePrice());
     }
 }

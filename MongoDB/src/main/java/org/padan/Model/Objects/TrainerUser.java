@@ -14,9 +14,9 @@ public class TrainerUser extends User {
     @BsonProperty("is_partner")
     private Boolean isPartner;
 
-    public TrainerUser( String firstName,
+    public TrainerUser(String firstName,
                        String lastName,
-                        String email,
+                       String email,
                        Boolean isPartner) {
         super(firstName, lastName, email);
         this.isPartner = isPartner;

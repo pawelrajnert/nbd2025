@@ -1,8 +1,6 @@
 package org.padan.Model.Objects;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -13,9 +11,9 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 @BsonDiscriminator(key = "clazz", value = "student")
 @NoArgsConstructor
 public class StudentUser extends User {
-//    @BsonCreator
+    //    @BsonCreator
     public StudentUser(String firstName,
-                        String lastName,
+                       String lastName,
                        String email) {
         super(firstName, lastName, email);
     }
@@ -25,5 +23,8 @@ public class StudentUser extends User {
         return 0.25;
     }
 
-
+    @Override
+    public String toString() {
+        return "StudentUser{} " + super.toString();
+    }
 }

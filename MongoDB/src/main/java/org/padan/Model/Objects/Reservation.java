@@ -29,12 +29,22 @@ public class Reservation {
 //    @BsonProperty("price")
 //    private Double price;
 
-    private double getPrice(){
+    private double getPrice() {
         return user.getDiscount() * room.getBasePrice();
     }
 
-    private int hoursReserved(){
+    private int hoursReserved() {
         return endTime.getHour() - startTime.getHour();
     }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "reservationId=" + reservationId +
+                ", room=" + room +
+                ", user=" + user +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
 }
