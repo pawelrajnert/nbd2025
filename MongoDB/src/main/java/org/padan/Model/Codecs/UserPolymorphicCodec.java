@@ -22,7 +22,6 @@ public class UserPolymorphicCodec implements Codec<User> {
 
     @Override
     public User decode(BsonReader reader, DecoderContext ctx) {
-        // Read the whole subdocument first
         BsonDocument doc = docCodec.decode(reader, ctx);
 
         String kind = doc.getString("clazz", new BsonString("")).getValue();
@@ -31,20 +30,17 @@ public class UserPolymorphicCodec implements Codec<User> {
                     case "student" -> StudentUser.class;
                     case "regular" -> RegularUser.class;
                     case "trainer" -> TrainerUser.class;
-                    case "user"    -> User.class; // rarely used, but keeps it explicit
+                    case "user" -> User.class;
                     default -> throw new CodecConfigurationException(
                             "Unknown discriminator 'clazz': " + kind);
                 };
 
-        @SuppressWarnings("unchecked")
         Codec<? extends User> delegate = registry.get(target);
         return delegate.decode(new BsonDocumentReader(doc), ctx);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void encode(BsonWriter writer, User value, EncoderContext ctx) {
-        // Delegate to the concrete subclass codec
         Codec<User> delegate = (Codec<User>) registry.get(value.getClass());
         delegate.encode(writer, value, ctx);
     }

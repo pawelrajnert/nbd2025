@@ -190,9 +190,9 @@ public class MongoDBConnectionTest {
                     Document result = client.getDatabase("admin").runCommand(new Document("isMaster", 1));
                     boolean isPrimary = result.getBoolean("ismaster", false);
                     boolean isSecondary = result.getBoolean("secondary", false);
-                    System.out.println("\n\n\nHostname:"+host);
-                    System.out.println("isPrimary:"+isPrimary);
-                    System.out.println("isSecondary:"+isSecondary+"\n\n\n");
+                    System.out.println("\n\n\nHostname:" + host);
+                    System.out.println("isPrimary:" + isPrimary);
+                    System.out.println("isSecondary:" + isSecondary + "\n\n\n");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
