@@ -2,13 +2,22 @@ package org.padan.Model.Objects;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class TrainerUserDTO extends UserDTO {
+@BsonDiscriminator(key = "clazz", value = "trainer")
+@NoArgsConstructor
+public class TrainerUser extends User {
+    @BsonProperty("is_partner")
     private Boolean isPartner;
 
-    public TrainerUserDTO(String firstName, String lastName, String email, Boolean isPartner) {
+    public TrainerUser(String firstName,
+                       String lastName,
+                       String email,
+                       Boolean isPartner) {
         super(firstName, lastName, email);
         this.isPartner = isPartner;
     }
@@ -16,11 +25,6 @@ public class TrainerUserDTO extends UserDTO {
     @Override
     public double getDiscount() {
         return isPartner ? 0.1 : 0.5;
-    }
-
-    @Override
-    public String getTypeName() {
-        return "TrainerUser";
     }
 
     @Override
