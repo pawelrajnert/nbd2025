@@ -24,7 +24,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 @Getter
 public abstract class AbstractMongoRepository implements AutoCloseable {
     private ConnectionString connectionString = new ConnectionString(
-            "mongodb://mongodb1:27017,mongodb2:27018,mongodb3:27019/?replicaSet=replica_set_single");
+            "mongodb://admin:adminpassword@localhost:27017/?authSource=admin");
 
     private MongoCredential credential = MongoCredential.createCredential(
             "admin", "admin", "adminpassword".toCharArray());
