@@ -21,40 +21,66 @@ public class RedisRepository implements Repository<Reservation> {
     @Override
     public void add(ClientSession session, Reservation obj) {
         reservation.add(session, obj);
-        if (obj.getReservationId() != null) {
-            redisCache.deleteOneInCache(obj.getReservationId());
+
+        try {
+            if (obj.getReservationId() != null) {
+                redisCache.deleteOneInCache(obj.getReservationId());
+            }
+            redisCache.deleteAll();
         }
-        redisCache.deleteAll();
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void remove(ClientSession session, ObjectId obj) {
         reservation.remove(session, obj);
-        redisCache.deleteOneInCache(obj);
-        redisCache.deleteAll();
+
+        try {
+            redisCache.deleteOneInCache(obj);
+            redisCache.deleteAll();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Reservation findById(ObjectId id) {
-        Optional<Reservation> res = redisCache.findById(id);
-        if (res.isPresent()) {
-            return res.get();
+        try {
+            Optional<Reservation> res = redisCache.findById(id);
+            if (res.isPresent()) {
+                return res.get();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Nie znaleziono danych w redisie. Błąd funkcji findById().");
         }
 
         Reservation currentMongo = reservation.findById(id);
         if (currentMongo != null) {
-            redisCache.putOneInCache(id, currentMongo, TTL_ID);
+            try {
+                redisCache.putOneInCache(id, currentMongo, TTL_ID);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return currentMongo;
     }
 
     @Override
     public List<Reservation> findAll() {
-        Optional<List<Reservation>> listToCache = redisCache.getAll();
-        if (listToCache.isPresent()) {
-            return listToCache.get();
+        try {
+            Optional<List<Reservation>> listToCache = redisCache.getAll();
+            if (listToCache.isPresent()) {
+                return listToCache.get();
+            }
         }
-
+        catch (Exception e) {
+            System.out.println("Nie znaleziono danych w redisie. Błąd funkcji findAll().");;
+        }
         List<Reservation> reservationsMongo = reservation.findAll();
         if (reservationsMongo != null) {
             redisCache.putAllInCache(reservationsMongo, TTL_ALL);
@@ -65,12 +91,18 @@ public class RedisRepository implements Repository<Reservation> {
     @Override
     public void update(ClientSession session, ObjectId id, Reservation obj) {
         reservation.update(session, id, obj);
-        redisCache.deleteOneInCache(id);
-        redisCache.deleteAll();
 
-        Reservation updated = reservation.findById(id);
-        if (updated != null) {
-            redisCache.putOneInCache(id, updated, TTL_ID);
+        try {
+            redisCache.deleteOneInCache(id);
+            redisCache.deleteAll();
+
+            Reservation updated = reservation.findById(id);
+            if (updated != null) {
+                redisCache.putOneInCache(id, updated, TTL_ID);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
