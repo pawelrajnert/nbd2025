@@ -12,11 +12,11 @@ This repository contains implementations of databases, for course “Non-relatio
 - [@DDanulo](https://github.com/DDanulo)
   
 ## Databases to do (technologies)
-- [ ] MongoDB
-- [ ] Redis
 - [ ] Cassandra
 - [ ] Kafka
 
 ## Finished tasks:
 - [x] PostgreSQL
+- [x] MongoDB
+- [x] Redis
 
