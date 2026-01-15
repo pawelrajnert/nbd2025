@@ -52,7 +52,9 @@ public class KafkaRentalConsumer implements Runnable {
                         e.printStackTrace();
                     }
                 }
-                if (!records.isEmpty()) consumer.commitSync();
+                if (!records.isEmpty()) {
+                    consumer.commitSync();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

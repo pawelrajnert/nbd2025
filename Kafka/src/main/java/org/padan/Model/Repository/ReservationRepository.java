@@ -11,14 +11,11 @@ import org.padan.Model.Objects.Reservation;
 import java.util.ArrayList;
 import java.util.List;
 
-// POPRAWKA 1: Dodano extends i implements
 public class ReservationRepository extends AbstractMongoRepository implements Repository<Reservation> {
 
     private final MongoCollection<Reservation> reservations;
 
-    // POPRAWKA 2: Konstruktor bez argumentów korzystający z metody rodzica
     public ReservationRepository() {
-        // getRentAFieldDB() pochodzi z AbstractMongoRepository
         this.reservations = getRentAFieldDB().getCollection("reservations", Reservation.class);
     }
 
